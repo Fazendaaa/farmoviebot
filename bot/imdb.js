@@ -1,20 +1,22 @@
 const Telegraf = require( 'telegraf' )
 const token = require( './token.js' )
+const imdb = require( 'imdb-api' );
 
-const bot = new Telegraf( token, { username: 'IMDB' } )
+const bot = new Telegraf( token )
 
-bot.command( 'start', ( ctx ) => ctx.reply( 'Helolo' ) )
-
-bot.on( 'text', ( ctx ) => {
-	ctx.reply( 'Hello ${ ctx.state.role }' )
+bot.command('start', (ctx) => {
+	console.log( 'start', ctx.from )
+	ctx.reply( 'Welcome!' )
 })
 
-bot.on( '/quit', ( ctx ) => {
-	ctx.leaveChat( 'Bye, ${ ctx.state.role }' )
+bot.command( 'search', (ctx) => {
+	console.log( 'serach', ctx.from )
+	const movie = ctx.message.text.split(' ').slice( 1 ).join(' ')
+
+	imdb.get( movie ).then( data => {
+		console.log( data ) 
+		ctx.reply( data.imdburl )
+	})
 })
 
-bot.on( 'iline_query', ( ctx ) => {
-	const result = []
-
-	ctx.answerInlineQuery( result )
-})
+bot.startPolling()

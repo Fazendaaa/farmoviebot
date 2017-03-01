@@ -44,30 +44,48 @@ bot.command( 'source', (ctx) => {
 	ctx.reply( 'https://github.com/Fazendaaa/imdb_bot_telegram' )
 })
 
+const inline = [ {
+					id: 'search',
+					title: 'SEARCH IN IMDB',
+					type: 'article',
+					input_message_content: {
+	  					message_text: `Please, type again`
+				  	}
+				} ]
+
 function inline_search( movie, callback ) {
 	search( movie, response => {
 						const data = response
-						const result = [ {
-						    				id: data.name,
-						    				title: data.name,
-						    				type: 'article',
-						    				input_message_content: {
-						      					message_text: `${data.imdburl}`
-						    			  	}
-										} ]
-
-						return callback( result )
+						inline.push( data )
+						console.log( inline )
+						return callback( inline )
 			      }
 		  )
 }
 
 bot.on( 'inline_query', (ctx) => {
 	const movie = ctx.inlineQuery.query || ''
-	
+
 	inline_search( movie, response => {
-									ctx.answerInlineQuery( response )
-								}
-						)
+		const result = response.
+					   filter( ( value )=> value.title.toLowerCase().indexOf( movie.toLowerCase()) !== -1 ).
+					   map( ( value ) => {
+					       return {
+			    				id: value.title,
+			    				title: value.title,
+			    				type: 'article',
+			    				input_message_content: {
+			      					message_text: value.imdburl,
+			      					parse_mode: 'HTML'
+			    			  	},
+			    			  	url: value.url,
+			    			  	description: value.plot,
+			    			 	thumb_url: value.poster
+							}
+					   } )
+
+		ctx.answerInlineQuery( result )
+	} )
 } )
 
 bot.startPolling( )

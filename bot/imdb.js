@@ -1,8 +1,8 @@
+require( 'dotenv' ).config( { path: '../.env' } )
 const Telegraf = require( 'telegraf' )
-const token = require( './token.js' )
 const imdb = require( 'imdb-api' );
 
-const bot = new Telegraf( token )
+const bot = new Telegraf( process.env.BOT_TOKEN )
 
 bot.command('start', (ctx) => {
 	console.log( 'start', ctx.from )

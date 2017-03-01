@@ -12,6 +12,7 @@
     "start": "node bot/imdb.js"
   },
   "dependencies": {
+    "dotenv": "^4.0.0",
     "imdb-api": "^2.2.1",
     "telegraf": "^3.6.6"
   },

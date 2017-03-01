@@ -17,15 +17,25 @@ bot.command( 'help', (ctx) => {
 })
 
 function search( movie, callback ) {
-	imdb.get( movie, ( err, data ) => {
-		return callback( data )
-	} )
+	const value = movie
+
+	imdb.get( value, ( err, response ) => {
+					if( err )
+						console.log( 'Error in function search: ', err )
+					else {
+						const data = response
+						return callback( data )
+					}
+				}
+			)
 }
 
 bot.command( 'search', (ctx) => {
 	const movie = ctx.message.text.split(' ').slice( 1 ).join(' ')
+
 	search( movie, response => {
-  						ctx.reply( response.imdburl )
+						const data = response
+  						ctx.reply( data.imdburl )
   					}
   		  )
 })
@@ -34,23 +44,30 @@ bot.command( 'source', (ctx) => {
 	ctx.reply( 'https://github.com/Fazendaaa/imdb_bot_telegram' )
 })
 
-/*
-bot.on( 'inline_query', (ctx) => {
-  const movie = ctx.inlineQuery.query || ''
-  search( movie, function( response ) {
-  						return ctx.answerInlineQuery( [
-	  						{
-						        id: response.name,
-						        title: response.name,
-						        type: 'article',
-						        input_message_content: {
-						        	message_text: response.imdburl
-						        }
-	  						}
-  						] )
-  					}
-  		  )
-} )
-*/
+function inline_search( movie, callback ) {
+	search( movie, response => {
+						const data = response
+						const result = [ {
+						    				id: data.name,
+						    				title: data.name,
+						    				type: 'article',
+						    				input_message_content: {
+						      					message_text: `${data.imdburl}`
+						    			  	}
+										} ]
 
-bot.startPolling()
+						return callback( result )
+			      }
+		  )
+}
+
+bot.on( 'inline_query', (ctx) => {
+	const movie = ctx.inlineQuery.query || ''
+	
+	inline_search( movie, response => {
+									ctx.answerInlineQuery( response )
+								}
+						)
+} )
+
+bot.startPolling( )

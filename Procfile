@@ -1,1 +1,1 @@
-web: node bot/imdb.js -p $PORT
+worker: node bot/imdb.js -p $PORT

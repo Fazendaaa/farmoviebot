@@ -31,6 +31,10 @@ bot.command( 'search', (ctx) => {
   		  )
 })
 
+bot.command( 'source', (ctx) => {
+	ctx.reply( https://github.com/Fazendaaa/imdb_bot_telegram )
+})
+
 /*
 bot.on( 'inline_query', (ctx) => {
   const movie = ctx.inlineQuery.query || ''

@@ -32,7 +32,7 @@ bot.command( 'search', (ctx) => {
 })
 
 bot.command( 'source', (ctx) => {
-	ctx.reply( https://github.com/Fazendaaa/imdb_bot_telegram )
+	ctx.reply( 'https://github.com/Fazendaaa/imdb_bot_telegram' )
 })
 
 /*

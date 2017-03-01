@@ -25,8 +25,8 @@ function search( movie, callback ) {
 bot.command( 'search', (ctx) => {
 	const movie = ctx.message.text.split(' ').slice( 1 ).join(' ')
 	search( movie, function( response ) {
-						console.log( response.name )
   						ctx.reply( response.imdburl )
+  						console.log( response.name )
   					}
   		  )
 })

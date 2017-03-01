@@ -4,7 +4,7 @@ const imdb = require( 'imdb-api' )
 const bot = new Telegraf( process.env.BOT_TOKEN )
 
 const welcome = "Welcome to IMDB bot. Type:\n/help"
-const help = "Usage:\n\n/search \'movie name\'/source\n\nIt\'s only working in command so far, the next update it will have inline mode.\nAny bugs or suggestions, talk to: @farm_kun"
+const help = "Usage:\n\n/search \'movie name\'\n/source -- see the code behind IMDBbot\n\nIt\'s only working in command so far, the next update it will have inline mode.\nAny bugs or suggestions, talk to: @farm_kun"
 
 bot.command( 'start', (ctx) => {
 	console.log( 'start', ctx.from )

@@ -2,11 +2,23 @@
   "name": "imdb_bot_telegram",
   "version": "1.0.0",
   "main": "bot/imdb.js",
-  "repository": "https://github.com/Fazendaaa/imdb_bot_telegram",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fazendaaa/imdb_bot_telegram.git"
+  },
   "author": "Farm <lucas.carotta@outlook.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node bot/imdb.js"
+  },
   "dependencies": {
     "imdb-api": "^2.2.1",
     "telegraf": "^3.6.6"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Fazendaaa/imdb_bot_telegram/issues"
+  },
+  "homepage": "https://github.com/Fazendaaa/imdb_bot_telegram#readme",
+  "devDependencies": {},
+  "description": ""
 }

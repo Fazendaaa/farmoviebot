@@ -4,7 +4,6 @@
 */
 
 require( 'dotenv' ).config( { path: '../.env' } )
-const Promise = require( 'promise' )
 
 const Telegraf = require( 'telegraf' )
 const imdb = require( 'imdb-api' )

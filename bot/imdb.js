@@ -84,7 +84,7 @@ bot.on( 'inline_query', (ctx) => {
 							}
 					   } )
 
-		ctx.answerInlineQuery( result )
+		return ctx.answerInlineQuery( result )
 	} )
 } )
 

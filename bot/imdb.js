@@ -1,8 +1,3 @@
-/*
-	Helped me out:
-		*	http://stackoverflow.com/a/38987183/7092954
-*/
-
 require( 'dotenv' ).config( { path: '../.env' } )
 
 const Telegraf = require( 'telegraf' )

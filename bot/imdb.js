@@ -26,8 +26,6 @@ bot.command( 'help', ctx => {
 
 bot.command( 'search', ctx => {
 	const movie = ctx.message.text.split(' ').slice( 1 ).join(' ')
-	const movie = str_emoji.replace( new RegExp( /[\uD83C-\uDBFF\uDC00-\uDFFF]+/g ), '' );
-	console.log( movie )
 
 	imdb.get( movie ).then( response => ctx.reply( response.imdburl ) )
 	.catch( console.log( 'Reject promise in search function' ) )
@@ -64,10 +62,9 @@ bot.on( 'inline_query', ctx => {
 	const movie = ctx.inlineQuery.query || ''
 
 	inline_search( movie, response => {
-		const result = response
-						.filter( value => value.title.toLowerCase()
-						.indexOf( movie.toLowerCase() ) !== -1 )
-		ctx.answerInlineQuery( result )
+		ctx.answerInlineQuery( response
+								.filter( value => value.title.toLowerCase()
+								.indexOf( movie.toLowerCase() ) !== -1 ) )
 	} )
 } )
 

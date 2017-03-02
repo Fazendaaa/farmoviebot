@@ -57,8 +57,8 @@ bot.on( 'inline_query', ctx => {
 
 	inline_search( movie, response => {
 		ctx.answerInlineQuery( response
-								.filter( value => value.title.toLowerCase()
-								.indexOf( movie.toLowerCase() ) !== -1 ) )
+								.filter( value => value.title.toLowerCase( )
+								.indexOf( movie.toLowerCase( ) ) !== -1 ) )
 	} )
 } )
 

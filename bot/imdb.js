@@ -18,14 +18,14 @@ bot.command( 'help', ctx => {
 	ctx.reply( help )
 })
 
-/*	It's not a pretty function, but when is typed 'gantz:o', :o turns out to be
-	a emoji. Or when typed 'gantz:0', the IMDB API return 'gantz' only, they
+/*	It's  not a pretty function, but when is typed 'gantz:o', :o turns out to be
+	a  emoji.  Or  when  typed 'gantz:0', the IMDB API return 'gantz' only, they
 	have to be 'gantz:o'
 */
 function messageToString( message ) {
 	return Buffer
 		  .from( message.split(' ').slice( 1 ).join(' '), 'ascii' )
-		  .toString( 'ascii' ).replace( /(=\(|:0)/, ': o' )
+		  .toString( 'ascii' ).replace( /(=\(|:0|:o)/, ': o' )
 }
 
 bot.command( 'search', ctx => {

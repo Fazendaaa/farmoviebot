@@ -67,13 +67,8 @@ function inline_search( movie, callback ) {
 bot.on( 'inline_query', ctx => {
 	const movie = messageToString( ctx.inlineQuery.query ) || ''
 
-	console.log( movie )
-
 	inline_search( movie, response => {
-		console.log( movie )
-		ctx.answerInlineQuery( response
-								.filter( value => value.title.toLowerCase( )
-								.indexOf( movie.toLowerCase( ) ) !== -1 ) )
+		ctx.answerInlineQuery( response )
 	} )
 } )
 

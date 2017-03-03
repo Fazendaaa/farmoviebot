@@ -18,8 +18,18 @@ bot.command( 'help', ctx => {
 	ctx.reply( help )
 })
 
+/*	It's not a pretty function, but when is typed 'gantz:o', :o turns out to be
+	a emoji. Or when typed 'gantz:0', the IMDB API return 'gantz' only, they
+	have to be 'gantz:o'
+*/
+function messageToString( message ) {
+	return Buffer
+		  .from( message.split(' ').slice( 1 ).join(' '), 'ascii' )
+		  .toString( 'ascii' ).replace( /(=\(|:0)/, ': o' )
+}
+
 bot.command( 'search', ctx => {
-	const movie = ctx.message.text.split(' ').slice( 1 ).join(' ')
+	const movie = messageToString( ctx.message.text )
 
 	imdb.get( movie ).then( response => ctx.reply( response.imdburl ) )
 	.catch( console.log( 'Reject promise in search function' ) )
@@ -53,7 +63,7 @@ function inline_search( movie, callback ) {
 }
 
 bot.on( 'inline_query', ctx => {
-	const movie = ctx.inlineQuery.query || ''
+	const movie = messageToString( ctx.inlineQuery.query ) || ''
 
 	inline_search( movie, response => {
 		ctx.answerInlineQuery( response

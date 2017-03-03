@@ -26,7 +26,7 @@ function messageToString( message ) {
 	return Buffer
 		  .from( message, 'ascii' )
 		  .toString( 'ascii' )
-		  .replace( /(=\(|:0|:o|[*:*o]|[*:*0])/, ': o' )
+		  .replace( /(?:=\(|:0|:o|: o|: 0)/, ': o' )
 }
 
 bot.command( 'search', ctx => {

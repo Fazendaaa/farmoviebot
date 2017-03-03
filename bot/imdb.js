@@ -24,12 +24,14 @@ bot.command( 'help', ctx => {
 */
 function messageToString( message ) {
 	return Buffer
-		  .from( message.split(' ').slice( 1 ).join(' '), 'ascii' )
-		  .toString( 'ascii' ).replace( /(=\(|:0|:o)/, ': o' )
+		  .from( message, 'ascii' )
+		  .toString( 'ascii' )
+		  .replace( /(=\(|:0|:o|[*:*o]|[*:*0])/, ': o' )
 }
 
 bot.command( 'search', ctx => {
-	const movie = messageToString( ctx.message.text )
+	const movie = messageToString( ctx.message.text.
+								   split(' ').slice( 1 ).join(' ') )
 
 	imdb.get( movie ).then( response => ctx.reply( response.imdburl ) )
 	.catch( console.log( 'Reject promise in search function' ) )
@@ -65,7 +67,10 @@ function inline_search( movie, callback ) {
 bot.on( 'inline_query', ctx => {
 	const movie = messageToString( ctx.inlineQuery.query ) || ''
 
+	console.log( movie )
+
 	inline_search( movie, response => {
+		console.log( movie )
 		ctx.answerInlineQuery( response
 								.filter( value => value.title.toLowerCase( )
 								.indexOf( movie.toLowerCase( ) ) !== -1 ) )

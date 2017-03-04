@@ -34,40 +34,56 @@ bot.command( 'search', ctx => {
 								   split(' ').slice( 1 ).join(' ') )
 
 	imdb.get( movie ).then( response => ctx.reply( response.imdburl ) )
-	.catch( console.log( 'Reject promise in search function' ) )
+	.catch( reason => {
+		console.log( 'Reject promise in search: ', reason ) 
+	})
 } )
 
 bot.command( 'source', ctx => {
 	ctx.reply( 'https://github.com/Fazendaaa/imdb_bot_telegram' )
 })
 
-function inline_search( movie, callback ) {
+function replyInline( data ) {
+	return {
+		id: data.title,
+		title: data.title,
+		type: 'article',
+		input_message_content: {
+			message_text: data.imdburl,
+			parse_mode: 'HTML'
+		},
+		url: data.url,
+		description: data.plot,
+		thumb_url: data.poster
+	}
+}
+
+function inlineSearch( movie, callback ) {
 	const inline = [ ]
 
-	imdb.get( movie )
-	.then( response => {
-			inline.push( {
-				id: response.title,
-				title: response.title,
-				type: 'article',
-				input_message_content: {
-					message_text: response.imdburl,
-					parse_mode: 'HTML'
-				},
-				url: response.url,
-				description: response.plot,
-				thumb_url: response.poster
-				}
-			)
-		callback( inline )
+	Promise.all( movie.split( /(?::|-|\s)/ ).concat( movie ) )
+	.then( variations => {
+		for( var i = variations.length - 1; i >= 0; i-- ) {
+			imdb.get( variations[ i ] )
+			.then( response => { 
+				inline.push( replyInline( response ) )
+				callback( inline )
+			} )
+			.catch( reason => { 
+				console.log( 'Reject promise inline search:', reason )
+			} )
+		}
 	} )
-	.catch( console.log( 'Reject promise in inline search function' ) )
+	.catch( reason => {
+		console.log( 'Reject promise all: ', reason )
+	} )
 }
 
 bot.on( 'inline_query', ctx => {
 	const movie = messageToString( ctx.inlineQuery.query ) || ''
 
-	inline_search( movie, response => {
+	inlineSearch( movie, response => {
+		console.log( response )
 		ctx.answerInlineQuery( response )
 	} )
 } )

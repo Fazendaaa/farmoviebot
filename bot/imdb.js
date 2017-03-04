@@ -5,8 +5,11 @@ const imdb = require( 'imdb-api' )
 const bot = new Telegraf( process.env.BOT_TOKEN )
 
 const welcome = "Welcome to IMDB bot.\n\nType:\n/help"
-const help = "Usage:\n\n/search \'movie name\'\n/source -- see the code behind\
-			  IMDBbot\n\nAny bugs or suggestions, talk to: @farm_kun"
+const help = "Usage:\n\n\
+@IMDBdbot 'movie name'\n\
+/search \'movie name\'\n\
+/source -- see the code behind IMDBbot\n\n\
+Any bugs or suggestions, talk to: @farm_kun"
 
 bot.command( 'start', ctx => {
 	console.log( 'start', ctx.from )
@@ -61,7 +64,7 @@ function replyInline( data ) {
 function inlineSearch( movie, callback ) {
 	const inline = [ ]
 
-	Promise.all( movie.split( /(?::|-|\s)/ ).concat( movie ) )
+	Promise.all( [ movie ].concat( movie.split( /(?::|-|\s)/ ) )  )
 	.then( variations => {
 		for( var i = variations.length - 1; i >= 0; i-- ) {
 			imdb.get( variations[ i ] )

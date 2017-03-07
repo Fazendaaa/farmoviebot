@@ -1,7 +1,7 @@
 require( 'dotenv' ).config( { path: '../.env' } )
 
 const Telegraf = require( 'telegraf' )
-const imdb = require( 'imdb-api' )
+const imdb = require('imdb-search')
 const bot = new Telegraf( process.env.BOT_TOKEN )
 
 const welcome = "Welcome to IMDB bot.\n\nType:\n/help"
@@ -37,7 +37,8 @@ function messageToString( message ) {
 bot.command( 'search', ctx => {
 	const movie = messageToString( removeCmd( ctx ) )
 
-	imdb.get( movie ).then( response => ctx.reply( response.imdburl ) )
+	imdb.search( movie ).then( response =>
+		ctx.reply( 'http://www.imdb.com/title/' + response[ 0 ].imdb ) )
 	.catch( reason => console.log( 'Reject promise in search: ', reason ) )
 } )
 
@@ -46,23 +47,29 @@ bot.command( 'source', ctx => {
 })
 
 function replyInline( data ) {
+	const poster = ( 'N/A' != data.poster ) ? data.poster : 'https://pbs.twimg.com/profile_images/600060188872155136/st4Sp6Aw.jpg'
+
 	return {
-		id: data.title,
+		id: data.id.toString(),
 		title: data.title,
 		type: 'article',
 		input_message_content: {
-			message_text: data.imdburl,
+			message_text: 'http://www.imdb.com/title/' + data.imdb,
 			parse_mode: 'HTML'
 		},
-		url: data.url,
-		description: data.plot,
-		thumb_url: data.poster
+		thumb_url: poster
 	}
 }
 
+function __inlineSearch( array ) {
+	return Promise
+		   .all( array.map( data => replyInline( data ) ) )
+		   .catch( issue => console.log( '__inlineSearch Promise: ', issue ) )
+}
+
 function inlineSearch( movie ) {
-	return imdb.get( movie )
-		   .then( response => replyInline( response ) )
+	return imdb.search( movie )
+		   .then( response => __inlineSearch( response ) )
 		   .catch( reason => console.log( 'inlineSearch: ', reason ) )
 }
 
@@ -70,7 +77,7 @@ bot.on( 'inline_query', ctx => {
 	const movie = messageToString( ctx.inlineQuery.query ) || ''
 
 	inlineSearch( movie )
-	.then( response => ctx.answerInlineQuery( [ response ] ) )
+	.then( response => ctx.answerInlineQuery( response ) )
 } )
 
 bot.startPolling( )

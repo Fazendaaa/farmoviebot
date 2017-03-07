@@ -48,7 +48,8 @@ bot.command( 'source', ctx => {
 
 function replyInline( data ) {
 	const poster = ( null != data.poster ) ? data.poster : 'http://www.costumecollection.com.au/media/images/cc/icons/exclamation-mark-300x262.gif'
-
+	const plot = ( undefined != data.plot ) ? data.plot : 'No plot avaliable'
+	
 	return {
 		id: data.imdb.id,
 		title: data.title,
@@ -57,7 +58,7 @@ function replyInline( data ) {
 			message_text: 'http://www.imdb.com/title/' + data.imdb.id,
 			parse_mode: 'HTML'
 		},
-		description: data.plot,
+		description: plot,
 		thumb_url: poster,
 	}
 }

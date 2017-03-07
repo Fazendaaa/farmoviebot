@@ -28,7 +28,7 @@ It is used [SemVer](http://semver.org/) for versioning. For the versions availab
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Fazendaaa/My_anime_list_telegram_bot/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Fazendaaa/imdb_bot_telegram/blob/master/LICENSE) file for details
 
 ## Acknowledgments
 

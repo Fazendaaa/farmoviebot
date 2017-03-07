@@ -47,30 +47,35 @@ bot.command( 'source', ctx => {
 })
 
 function replyInline( data ) {
-	const poster = ( 'N/A' != data.poster ) ? data.poster : 'https://pbs.twimg.com/profile_images/600060188872155136/st4Sp6Aw.jpg'
+	const poster = ( null != data.poster ) ? data.poster : 'http://www.costumecollection.com.au/media/images/cc/icons/exclamation-mark-300x262.gif'
 
 	return {
-		id: data.id.toString(),
+		id: data.imdb.id,
 		title: data.title,
 		type: 'article',
 		input_message_content: {
-			message_text: 'http://www.imdb.com/title/' + data.imdb,
+			message_text: 'http://www.imdb.com/title/' + data.imdb.id,
 			parse_mode: 'HTML'
 		},
-		thumb_url: poster
+		description: data.plot,
+		thumb_url: poster,
 	}
 }
 
 function __inlineSearch( array ) {
 	return Promise
-		   .all( array.map( data => replyInline( data ) ) )
+		   .all( array.map( data =>
+			   imdb.get( data.id )
+			   .then( movie => replyInline( movie ) )
+			   .catch( issue => console.log( '__inlineSearch then: ', issue ) )
+			) )
 		   .catch( issue => console.log( '__inlineSearch Promise: ', issue ) )
 }
 
 function inlineSearch( movie ) {
 	return imdb.search( movie )
-		   .then( response => __inlineSearch( response ) )
-		   .catch( reason => console.log( 'inlineSearch: ', reason ) )
+		  .then( result => __inlineSearch( result ) )
+		  .catch( issue => console.log( 'inlineSearch: ', issue ) )
 }
 
 bot.on( 'inline_query', ctx => {
@@ -78,6 +83,7 @@ bot.on( 'inline_query', ctx => {
 
 	inlineSearch( movie )
 	.then( response => ctx.answerInlineQuery( response ) )
+	.catch( issue => console.log( 'inline_query: ', issue ) )
 } )
 
 bot.startPolling( )

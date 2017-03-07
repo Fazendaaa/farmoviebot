@@ -11,7 +11,7 @@ This bot is up and running in [Heroku](https://www.heroku.com/home)
 ## Built With
 
 * [Node.js](https://nodejs.org/en/) - The running application
-* [imdb-api](https://github.com/worr/node-imdb-api) - searches the database
+* [imdb-search](https://github.com/newvertex/imdb-search) - searches the database
 * [dotenv](https://github.com/motdotla/dotenv) - Used to read variables .env
 
 ## Contributing
@@ -32,4 +32,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 
 ## Acknowledgments
 
-Huge thanks to [Worr](https://github.com/worr) and the IMDb API that he made it. And the folks behind Telegraf for an awsome and well documented API. Without these kinda of people and their works it would be harder to make this bot.
+Huge thanks to [newvertex](https://github.com/newvertex/) and the IMDb API that he made it, pretty incredible work. And the folks behind Telegraf for an awsome and well documented API. Without these kinda of people and their works it would be harder to make this bot.

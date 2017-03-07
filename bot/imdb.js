@@ -12,14 +12,16 @@ const help = "Usage:\n\n\
 Any bugs or suggestions, talk to: @farm_kun"
 
 bot.command( 'start', ctx => {
-	console.log( 'start', ctx.from )
 	ctx.reply( welcome )
 })
 
 bot.command( 'help', ctx => {
-	console.log( 'help', ctx.from )
 	ctx.reply( help )
 })
+
+function removeCmd( ctx ) {
+	return ctx.message.text.split(' ').slice( 1 ).join(' ')
+}
 
 /*	It's  not a pretty function, but when is typed 'gantz:o', :o turns out to be
 	a  emoji.  Or  when  typed 'gantz:0', the IMDB API return 'gantz' only, they
@@ -33,13 +35,10 @@ function messageToString( message ) {
 }
 
 bot.command( 'search', ctx => {
-	const movie = messageToString( ctx.message.text.
-								   split(' ').slice( 1 ).join(' ') )
+	const movie = messageToString( removeCmd( ctx ) )
 
 	imdb.get( movie ).then( response => ctx.reply( response.imdburl ) )
-	.catch( reason => {
-		console.log( 'Reject promise in search: ', reason ) 
-	})
+	.catch( reason => console.log( 'Reject promise in search: ', reason ) )
 } )
 
 bot.command( 'source', ctx => {
@@ -61,34 +60,17 @@ function replyInline( data ) {
 	}
 }
 
-function inlineSearch( movie, callback ) {
-	const inline = [ ]
-
-	Promise.all( [ movie ].concat( movie.split( /(?::|-|\s)/ ) )  )
-	.then( variations => {
-		for( var i = variations.length - 1; i >= 0; i-- ) {
-			imdb.get( variations[ i ] )
-			.then( response => { 
-				inline.push( replyInline( response ) )
-				callback( inline )
-			} )
-			.catch( reason => { 
-				console.log( 'Reject promise inline search:', reason )
-			} )
-		}
-	} )
-	.catch( reason => {
-		console.log( 'Reject promise all: ', reason )
-	} )
+function inlineSearch( movie ) {
+	return imdb.get( movie )
+		   .then( response => replyInline( response ) )
+		   .catch( reason => console.log( 'inlineSearch: ', reason ) )
 }
 
 bot.on( 'inline_query', ctx => {
 	const movie = messageToString( ctx.inlineQuery.query ) || ''
 
-	inlineSearch( movie, response => {
-		console.log( response )
-		ctx.answerInlineQuery( response )
-	} )
+	inlineSearch( movie )
+	.then( response => ctx.answerInlineQuery( [ response ] ) )
 } )
 
 bot.startPolling( )

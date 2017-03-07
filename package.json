@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "dotenv": "^4.0.0",
-    "imdb-api": "^2.2.1",
-    "telegraf": "^3.6.6"
+    "imdb-search": "0.1.5",
+    "telegraf": "3.6.7"
   },
   "bugs": {
     "url": "https://github.com/Fazendaaa/imdb_bot_telegram/issues"

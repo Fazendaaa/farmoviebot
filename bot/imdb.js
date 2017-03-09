@@ -47,9 +47,10 @@ bot.command( 'source', ctx => {
 })
 
 function replyInline( data ) {
-	const poster = ( null != data.poster ) ? data.poster : 'http://www.costumecollection.com.au/media/images/cc/icons/exclamation-mark-300x262.gif'
+	const poster = ( null != data.poster ) ? data.poster :
+	'https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/not_found.gif'
 	const plot = ( undefined != data.plot ) ? data.plot : 'No plot avaliable'
-	
+
 	return {
 		id: data.imdb.id,
 		title: data.title,
@@ -61,6 +62,17 @@ function replyInline( data ) {
 		description: plot,
 		thumb_url: poster,
 	}
+}
+
+function uniq( array ) {
+	const lookup = {}
+
+	return array.filter( data => {
+		   		if( !( data.id in lookup ) ) {
+		   			lookup[ data.id ] = 1
+		   			return true
+		   		}
+		   	} )
 }
 
 function __inlineSearch( array ) {
@@ -83,7 +95,7 @@ bot.on( 'inline_query', ctx => {
 	const movie = messageToString( ctx.inlineQuery.query ) || ''
 
 	inlineSearch( movie )
-	.then( response => ctx.answerInlineQuery( response ) )
+	.then( response => ctx.answerInlineQuery( uniq( response ) ) )
 	.catch( issue => console.log( 'inline_query: ', issue ) )
 } )
 

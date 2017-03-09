@@ -47,8 +47,7 @@ bot.command( 'source', ctx => {
 })
 
 function replyInline( data ) {
-	const poster = ( null != data.poster ) ? data.poster :
-	'https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/not_found.gif'
+	const poster = ( null != data.poster ) ? data.poster : 'http://bit.ly/2moqQnT'
 	const plot = ( undefined != data.plot ) ? data.plot : 'No plot avaliable'
 
 	return {
@@ -91,11 +90,11 @@ function inlineSearch( movie ) {
 						title: 'Not Found',
 						type: 'article',
 						input_message_content: {
-							message_text: 'https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/not_found.gif',
+							message_text: 'http://bit.ly/2moqQnT',
 							parse_mode: 'HTML'
 						},
 						description: 'Movie not found',
-						thumb_url: 'https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/not_found.gif',
+						thumb_url: 'http://bit.ly/2moqQnT',
 					}
 
 	return imdb.search( movie )

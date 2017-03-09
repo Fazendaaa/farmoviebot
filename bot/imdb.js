@@ -86,9 +86,25 @@ function __inlineSearch( array ) {
 }
 
 function inlineSearch( movie ) {
+	const notFound = {
+						id: '0',
+						title: 'Not Found',
+						type: 'article',
+						input_message_content: {
+							message_text: 'https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/not_found.gif',
+							parse_mode: 'HTML'
+						},
+						description: 'Movie not found',
+						thumb_url: 'https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/not_found.gif',
+					}
+
 	return imdb.search( movie )
 		  .then( result => __inlineSearch( result ) )
-		  .catch( issue => console.log( 'inlineSearch: ', issue ) )
+		  .catch( issue => {
+		      console.log( 'inlineSearch: ', issue )
+		  	  if ( 'Movie not found!' === issue )
+		  	      return [ notFound ]
+		  } )
 }
 
 bot.on( 'inline_query', ctx => {

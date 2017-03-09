@@ -90,10 +90,10 @@ function inlineSearch( movie ) {
 						title: 'Not Found',
 						type: 'article',
 						input_message_content: {
-							message_text: 'http://bit.ly/2moqQnT',
+							message_text: 'http://www.imdb.com',
 							parse_mode: 'HTML'
 						},
-						description: 'Movie not found',
+						description: 'Content not found',
 						thumb_url: 'http://bit.ly/2moqQnT',
 					}
 

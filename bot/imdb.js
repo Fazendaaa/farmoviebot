@@ -46,6 +46,22 @@ bot.command( 'source', ctx => {
 	ctx.reply( 'https://github.com/Fazendaaa/imdb_bot_telegram' )
 })
 
+function verifyData( data ) {
+	return ( null != data && undefined != data ) ? data : 'Not avaliable'
+}
+
+function replyMarkdown( data ) {
+	const rating = verifyData( data.imdb.rating )
+	const metacritic = verifyData( data.metacritic )
+	const rotten = ( undefined != data.tomato ) ? ( null != data.tomato.url ? data.tomato.url : 'Not avaliable' ) : 'Not avaliable'
+	const message = ( 'Not avaliable' != rotten ) ? 'here' : 'Not avaliable'
+
+	return `[${data.title}](${'http://www.imdb.com/title/' + data.imdb.id})
+- _Rating_: *${rating}*
+- _Metacritic_: *${metacritic}*
+- _RottenTomatoes_: [${message}](${rotten})`
+}
+
 function replyInline( data ) {
 	const poster = ( null != data.poster ) ? data.poster : 'http://bit.ly/2moqQnT'
 	const plot = ( undefined != data.plot ) ? data.plot : 'No plot avaliable'
@@ -55,8 +71,8 @@ function replyInline( data ) {
 		title: data.title,
 		type: 'article',
 		input_message_content: {
-			message_text: 'http://www.imdb.com/title/' + data.imdb.id,
-			parse_mode: 'HTML'
+			message_text: replyMarkdown( data ),
+			parse_mode: 'Markdown'
 		},
 		description: plot,
 		thumb_url: poster,
@@ -94,7 +110,7 @@ function inlineSearch( movie ) {
 							parse_mode: 'HTML'
 						},
 						description: 'Content not found',
-						thumb_url: 'http://bit.ly/2moqQnT',
+						thumb_url: 'http://bit.ly/2moqQnT'
 					}
 
 	return imdb.search( movie )

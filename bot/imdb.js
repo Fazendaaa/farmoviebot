@@ -57,7 +57,7 @@ function replyMarkdown( data ) {
 	const rotten = ( undefined != data.tomato ) ?
 				   ( undefined != data.tomato.ratting ? `${data.tomato.ratting}%` :
 				   	'Not avaliable' ) : 'Not avaliable'
-	console.log( data )
+
 	return `[${data.title}](${'http://www.imdb.com/title/' + data.imdb.id})
 - _Rating_: *${rating}*
 - _Metacritic_: *${metacritic}*

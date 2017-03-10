@@ -46,20 +46,22 @@ bot.command( 'source', ctx => {
 	ctx.reply( 'https://github.com/Fazendaaa/imdb_bot_telegram' )
 })
 
-function verifyData( data ) {
-	return ( null != data && undefined != data ) ? data : 'Not avaliable'
+function verifyData( data, unit ) {
+	return ( null != data && undefined != data ) ?
+		   `${data}${unit}` : 'Not avaliable'
 }
 
 function replyMarkdown( data ) {
-	const rating = verifyData( data.imdb.rating )
-	const metacritic = verifyData( data.metacritic )
-	const rotten = ( undefined != data.tomato ) ? ( null != data.tomato.url ? data.tomato.url : 'Not avaliable' ) : 'Not avaliable'
-	const message = ( 'Not avaliable' != rotten ) ? 'here' : 'Not avaliable'
-
+	const rating = verifyData( data.imdb.rating, '/10' )
+	const metacritic = verifyData( data.metacritic, '%' )
+	const rotten = ( undefined != data.tomato ) ?
+				   ( undefined != data.tomato.ratting ? `${data.tomato.ratting}%` :
+				   	'Not avaliable' ) : 'Not avaliable'
+	console.log( data )
 	return `[${data.title}](${'http://www.imdb.com/title/' + data.imdb.id})
 - _Rating_: *${rating}*
 - _Metacritic_: *${metacritic}*
-- _RottenTomatoes_: [${message}](${rotten})`
+- _RottenTomatoes_: *${rotten}*`
 }
 
 function replyInline( data ) {

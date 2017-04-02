@@ -38,14 +38,14 @@ function messageToString( message ) {
 
 bot.command( 'search', ctx => {
 	const movie = messageToString( removeCmd( ctx ) )
-
+	
 	imdb.search( movie ).then( response =>
 		ctx.reply( 'http://www.imdb.com/title/' + response[ 0 ].imdb ) )
 	.catch( reason => console.log( 'Reject promise in search: ', reason ) )
 } )
 
 bot.command( 'source', ctx => {
-	ctx.reply( 'https://github.com/Fazendaaa/imdb_bot_telegram' )
+	ctx.reply( 'https://github.com/Fazendaaa/farmoviebot' )
 })
 
 function verifyData( data, unit, error ) {

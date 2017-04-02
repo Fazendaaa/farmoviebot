@@ -1,6 +1,6 @@
 # Farmovie Telegram bot
 
-<img src="https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/IMDb.png" alt="imdb" align="right" />
+<img src="https://raw.githubusercontent.com/Fazendaaa/farmoviebot/master/logo.png" alt="logo" align="right" />
 
 This is a [Telgram](https://telegram.org) search bot in [IMDb](http://www.imdb.com) database.
 

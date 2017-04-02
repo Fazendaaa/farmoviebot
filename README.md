@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/Fazendaaa/farmoviebot/master/logo.png" alt="logo" align="right" />
 
-This is a [Telgram](https://telegram.org) search bot in [IMDb](http://www.imdb.com) database.
+This is a [Telgram](https://telegram.org) that searches movie info.
 
 ## Deployment
 
@@ -34,3 +34,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 ## Acknowledgments
 
 Huge thanks to [newvertex](https://github.com/newvertex/) and the IMDb API that he made it, pretty incredible work. And the folks behind Telegraf for an awsome and well documented API. Without these kinda of people and their works it would be harder to make this bot.
+
+## Next Updates
+
+* Change the API from [IMDb](http://www.imdb.com) database to Google database.
+* If possible, show to the user all sessions of the searched movie.

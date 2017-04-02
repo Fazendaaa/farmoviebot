@@ -49,7 +49,7 @@ bot.command( 'source', ctx => {
 })
 
 function verifyData( data, unit, error ) {
-	return ( null != data && undefined != data && isNaN( data ) ) ?
+	return ( null != data && undefined != data ) ?
 		   `${data}${unit}` : error
 }
 

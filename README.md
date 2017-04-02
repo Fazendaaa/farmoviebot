@@ -1,4 +1,4 @@
-# IMDb Telegram bot
+# Farmovie Telegram bot
 
 <img src="https://raw.githubusercontent.com/Fazendaaa/imdb_bot_telegram/master/IMDb.png" alt="imdb" align="right" />
 
@@ -13,6 +13,7 @@ This bot is up and running in [Heroku](https://www.heroku.com/home)
 * [Node.js](https://nodejs.org/en/) - The running application
 * [imdb-search](https://github.com/newvertex/imdb-search) - searches the database
 * [dotenv](https://github.com/motdotla/dotenv) - Used to read variables .env
+* [FreeLogo](http://www.freelogodesign.org/?lang=EN) - Making the logos
 
 ## Contributing
 

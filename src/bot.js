@@ -8,7 +8,7 @@ bot.use( Telegraf.log() )
 
 const welcome = "Welcome to Farmoviesbot.\n\nType:\n/help"
 const help = "Usage:\n\n\
-@farmoviesbot 'movie/tv show name'\n\
+@farmoviebot 'movie/tv show name'\n\
 /search \'movie/tv show name\'\n\
 /source -- see the code behind Farmoviesbot\n\n\
 Any bugs or suggestions, talk to: @farmy"

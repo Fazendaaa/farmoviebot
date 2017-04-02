@@ -5,3 +5,4 @@ yarn.lock
 npm-debug.log
 .DS_Store
 /*.env
+README.md.backup

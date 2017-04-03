@@ -23,7 +23,7 @@ bot.command( 'help', ctx => {
 })
 
 bot.command( 'store', ctx => {
-	ctx.reply( 'https://storebot.me/bot/farmoviebot' )
+	ctx.reply( 'https://telegram.me/storebot?start=farmoviebot' )
 })
 
 bot.command( 'source', ctx => {

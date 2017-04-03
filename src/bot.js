@@ -10,6 +10,7 @@ const welcome = "Welcome to Farmoviesbot.\n\nType:\n/help"
 const help = "Usage:\n\n\
 @farmoviebot 'movie/tv show name'\n\
 /search \'movie/tv show name\'\n\
+/store -- leave your feedback\n\
 /source -- see the code behind Farmoviesbot\n\n\
 Any bugs or suggestions, talk to: @farmy"
 
@@ -19,6 +20,14 @@ bot.command( 'start', ctx => {
 
 bot.command( 'help', ctx => {
 	ctx.reply( help )
+})
+
+bot.command( 'store', ctx => {
+	ctx.reply( 'https://storebot.me/bot/farmoviebot' )
+})
+
+bot.command( 'source', ctx => {
+	ctx.reply( 'https://github.com/Fazendaaa/farmoviebot' )
 })
 
 function removeCmd( ctx ) {
@@ -43,10 +52,6 @@ bot.command( 'search', ctx => {
 		ctx.reply( 'http://www.imdb.com/title/' + response[ 0 ].imdb ) )
 	.catch( reason => console.log( 'Reject promise in search: ', reason ) )
 } )
-
-bot.command( 'source', ctx => {
-	ctx.reply( 'https://github.com/Fazendaaa/farmoviebot' )
-})
 
 function verifyData( data, unit, error ) {
 	return ( null != data && undefined != data ) ?

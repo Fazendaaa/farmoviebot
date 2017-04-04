@@ -13,6 +13,27 @@ const help = "Usage:\n\n\
 /store -- leave your feedback\n\
 /source -- see the code behind Farmoviesbot\n\n\
 Any bugs or suggestions, talk to: @farmy"
+const notFound = {
+					id: '0',
+					title: 'Not Found',
+					type: 'article',
+					input_message_content: {
+						message_text: 'http://www.imdb.com',
+						parse_mode: 'HTML'
+					},
+					description: 'Content not found'
+				}
+const messageSearch = "From tv shows to movies."
+const search = {
+					id: '1',
+					title: 'Search for anything',
+					type: 'article',
+					input_message_content: {
+						message_text: messageSearch,
+						parse_mode: 'Markdown'
+					},
+					description: messageSearch
+				}
 
 bot.command( 'start', ctx => {
 	ctx.reply( welcome )
@@ -45,23 +66,9 @@ function messageToString( message ) {
 		  .replace( /(?:=\(|:0|:o|: o|: 0)/, ': o' )
 }
 
-bot.command( 'search', ctx => {
-	const movie = messageToString( removeCmd( ctx ) )
-	
-	imdb.search( movie ).then( response =>
-		ctx.reply( 'http://www.imdb.com/title/' + response[ 0 ].imdb ) )
-	.catch( reason => console.log( 'Reject promise in search: ', reason ) )
-} )
-
-function verifyData( data, unit, error ) {
-	return ( null != data && undefined != data ) ?
-		   `${data}${unit}` : error
-}
-
 function replyMessage( data ) {
 	const rating = verifyData( data.imdb.rating, '/10', 'Not avaliable' )
 	const metacritic = verifyData( data.metacritic, '%', 'Not avaliable' )
-	const plot = verifyData( data.plot, '', 'Not avaliable' )
 	const rotten = ( undefined != data.tomato ) ?
 				   ( undefined != data.tomato.ratting ?
 				   `${data.tomato.ratting}%` : 'Not avaliable' ) :
@@ -71,6 +78,28 @@ function replyMessage( data ) {
 - _IMDb_: *${rating}*
 - _Metacritic_: *${metacritic}*
 - _RottenTomatoes_: *${rotten}*`
+}
+
+bot.command( 'search', ctx => {
+	const movie = messageToString( removeCmd( ctx ) )
+
+	if( '' != movie  )
+		imdb.search( movie )
+			.then( response =>
+				imdb.get( response[ 0 ].imdb )
+			   		.then( movie =>ctx.reply( replyMessage( movie ),
+					    					   { parse_mode: 'Markdown' } ) )
+					.catch( issue => console.log( 'Reject promise in get search: ',
+										   issue ) ) )
+			.catch( issue => console.log( 'Reject promise in search search: ',
+										   issue ) )
+	else
+		ctx.reply( `Movie not found: try it again, please.` )
+} )
+
+function verifyData( data, unit, error ) {
+	return ( null != data && undefined != data ) ?
+		   `${data}${unit}` : error
 }
 
 function verifyObject( obj ) {
@@ -165,39 +194,17 @@ function __inlineSearch( array ) {
 }
 
 function inlineSearch( movie ) {
-	const notFound = {
-						id: '0',
-						title: 'Not Found',
-						type: 'article',
-						input_message_content: {
-							message_text: 'http://www.imdb.com',
-							parse_mode: 'HTML'
-						},
-						description: 'Content not found'
-					}
-	const messageSearch = "From tv shows to movies."
-	const search = {
-						id: '1',
-						title: 'Search for anything',
-						type: 'article',
-						input_message_content: {
-							message_text: messageSearch,
-							parse_mode: 'Markdown'
-						},
-						description: messageSearch
-					}
-
-	if( '' == movie ) {
+	if( '' == movie )
 		return Promise.resolve( [ search ] )
-	}
+
 	else {
 		return imdb.search( movie )
-		  .then( result => __inlineSearch( result ) )
-		  .catch( issue => {
-		      console.log( 'inlineSearch: ', issue )
-		  	  if ( 'Movie not found!' === issue )
-		  	      return [ notFound ]
-		  } )
+				   .then( result => __inlineSearch( result ) )
+				   .catch( issue => {
+				       console.log( 'inlineSearch: ', issue )
+					   if ( 'Movie not found!' === issue )
+							return [ notFound ]
+					} )
 	}
 }
 

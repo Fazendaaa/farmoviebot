@@ -2,6 +2,8 @@ require( 'dotenv' ).config( { path: '../.env' } )
 
 const Telegraf = require( 'telegraf' )
 const imdb = require( 'imdb-search' )
+const moment = require( 'moment' )
+const humanize = require( 'humanize-duration' )
 const bot = new Telegraf( process.env.BOT_TOKEN )
 
 bot.use( Telegraf.log() )
@@ -66,18 +68,45 @@ function messageToString( message ) {
 		  .replace( /(?:=\(|:0|:o|: o|: 0)/, ': o' )
 }
 
+
+function verifyData( data, error ) {
+	return ( null != data && undefined != data && '' != data ) ? `${data}` : error
+}
+
+function verifyRelease( data ) {
+	return ( null != data && undefined != data ) ?
+			 `- _Release_: *${moment( data ).format( 'LL' )}*\n` : ''
+}
+
+function verifyDataMd( pre, data, unit ) {
+	return ( null != data && undefined != data ) ?
+		   `- _${pre}_: *${data}${unit}*\n` : ''
+}
+
+function verifyRuntime( data ) {
+	return ( null != data && undefined != data ) ?
+			 `- _Runtime_: *${humanize( data*60000 ) }*\n` : ''
+}
+
+function verifyObject( obj ) {
+	return ( null != obj && undefined != obj && isNaN( obj ) ) ?
+			 obj.join("\n") : 'NotAvailable'
+}
+
 function replyMessage( data ) {
-	const rating = verifyData( data.imdb.rating, '/10', 'Not avaliable' )
-	const metacritic = verifyData( data.metacritic, '%', 'Not avaliable' )
+	const poster = verifyData( data.poster, "http://bit.ly/2oXVrqT" )
+	const released = verifyRelease( data.released )
+	const rated = verifyDataMd( "Rated", data.rated, '' )
+	const runtime = verifyRuntime( data.runtime )
+	const rating = verifyDataMd( "IMDb", data.imdb.rating, '/10' )
+	const metacritic = verifyDataMd( "Metacritic", data.metacritic, '%' )
 	const rotten = ( undefined != data.tomato ) ?
 				   ( undefined != data.tomato.ratting ?
-				   `${data.tomato.ratting}%` : 'Not avaliable' ) :
-				   'Not avaliable'
+				   `- _RottenTomatoes_: *${data.tomato.ratting}%*` : '' ) : ''
 
-	return `[${data.title}](${'http://www.imdb.com/title/' + data.imdb.id})
-- _IMDb_: *${rating}*
-- _Metacritic_: *${metacritic}*
-- _RottenTomatoes_: *${rotten}*`
+	//	'\u200B' is the invisible unicode character
+	return `[\u200B](${poster})[${data.title}](${'http://www.imdb.com/title/' + data.imdb.id})
+${released}${rated}${runtime}${rating}${metacritic}${rotten}`
 }
 
 bot.command( 'search', ctx => {
@@ -87,7 +116,7 @@ bot.command( 'search', ctx => {
 		imdb.search( movie )
 			.then( response =>
 				imdb.get( response[ 0 ].imdb )
-			   		.then( movie =>ctx.reply( replyMessage( movie ),
+			   		.then( movie => ctx.reply( replyMessage( movie ),
 					    					   { parse_mode: 'Markdown' } ) )
 					.catch( issue => console.log( 'Reject promise in get search: ',
 										   issue ) ) )
@@ -97,16 +126,6 @@ bot.command( 'search', ctx => {
 		ctx.reply( `Movie not found: try it again, please.` )
 } )
 
-function verifyData( data, unit, error ) {
-	return ( null != data && undefined != data ) ?
-		   `${data}${unit}` : error
-}
-
-function verifyObject( obj ) {
-	return ( null != obj && undefined != obj && isNaN( obj ) ) ?
-			 obj.join("\n") : 'Not avaliable'
-}
-
 bot.action( /.+/, ( ctx ) => {
 	const result = ctx.match[ 0 ].split( "/" )
 	imdb.get( result[ 0 ] )
@@ -115,22 +134,21 @@ bot.action( /.+/, ( ctx ) => {
 
 			switch( result[ 1 ] ){
 				case "plot":
-					data = verifyData( movie.plot, '', 'Not avaliable' )
+					data = verifyData( movie.plot, "Not Available" )
 					break
 				case "genres":
 					data = verifyObject( movie.genres )
 					break
 				case "cast":
-					const director = verifyData( movie.director, '',
-												 'Not avaliable') 
-					const actors = verifyObject( movie.actors )
+					const director = verifyData( movie.director, "Not Available" ) 
+					const actors = verifyObject( movie.actors, "Not Available" )
 					data = `Directed by: ${director}\nCasting:\n${actors}`
 					break
 				case "awards":
-					data = verifyData( movie.awards.text, '', 'Not avaliable' )
+					data = verifyData( movie.awards.text, "Not Available" )
 					break
 				default:
-					data = 'Not avaliable'
+					data = 'Not Available'
 			}
 
 			return ctx.answerCallbackQuery( data.substring( 0, 199 ),
@@ -153,8 +171,8 @@ function replyButton( id ) {
 }
 
 function replyInline( data ) {
-	const poster = verifyData( data.poster, '', 'http://bit.ly/2moqQnT' )
-	const plot = verifyData(  data.plot, '', 'Not avaliable' )
+	const poster = verifyData( data.poster, 'http://bit.ly/2moqQnT' )
+	const plot = verifyData(  data.plot, 'Not Available' )
 	const newId = data.imdb.id
 
 	return {

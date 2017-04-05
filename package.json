@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "dotenv": "^4.0.0",
+    "humanize-duration": "3.10.0",
     "imdb-search": "0.1.5",
+    "moment": "2.18.1",
     "object-sizeof": "1.1.1",
     "telegraf": "3.6.7"
   },

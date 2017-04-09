@@ -126,6 +126,13 @@ bot.command( 'search', ctx => {
 		ctx.reply( `Movie not found: try it again, please.` )
 } )
 
+function replyCallback( string ) {
+	const lastIndex = string.lastIndexOf(" ")
+	const newString = string.substring( 0, lastIndex )
+	
+	return `${newString}...`
+}
+
 bot.action( /.+/, ( ctx ) => {
 	const result = ctx.match[ 0 ].split( "/" )
 	imdb.get( result[ 0 ] )
@@ -151,8 +158,8 @@ bot.action( /.+/, ( ctx ) => {
 					data = 'Not Available'
 			}
 
-			return ctx.answerCallbackQuery( data.substring( 0, 199 ),
-											undefined, true ) 
+			return ctx.answerCallbackQuery(
+				   replyCallback( data.substring( 0, 196 ) ), undefined, true ) 
 		}
 	) 
 })

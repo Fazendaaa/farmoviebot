@@ -141,7 +141,10 @@ bot.action( /.+/, ( ctx ) => {
 
 			switch( result[ 1 ] ){
 				case "plot":
-					data = verifyData( movie.plot, "Not Available" )
+					const plot = verifyData( movie.plot, "Not Available" )
+					data = ( "Not Available" != plot ) ?
+							 replyCallback( plot.substring( 0, 196 ) ) :
+							 "Not Available"
 					break
 				case "genres":
 					data = verifyObject( movie.genres )
@@ -158,8 +161,7 @@ bot.action( /.+/, ( ctx ) => {
 					data = 'Not Available'
 			}
 
-			return ctx.answerCallbackQuery(
-				   replyCallback( data.substring( 0, 196 ) ), undefined, true ) 
+			return ctx.answerCallbackQuery( data, undefined, true ) 
 		}
 	) 
 })

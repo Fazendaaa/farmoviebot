@@ -1,6 +1,6 @@
 # Farmovie Telegram bot
 
-<img src="https://raw.githubusercontent.com/Fazendaaa/farmoviebot/master/logo.png" alt="logo" align="right" />
+<img src="https://raw.githubusercontent.com/Fazendaaa/farmoviebot/master/logo.jpg" alt="logo" align="right" />
 
 This is a [Telgram](https://telegram.org) that searches movie info.
 
@@ -13,7 +13,6 @@ This bot is up and running in [Heroku](https://www.heroku.com/home)
 * [Node.js](https://nodejs.org/en/) - The running application
 * [imdb-search](https://github.com/newvertex/imdb-search) - searches the database
 * [dotenv](https://github.com/motdotla/dotenv) - Used to read variables .env
-* [FreeLogo](http://www.freelogodesign.org/?lang=EN) - Making the logos
 
 ## Contributing
 

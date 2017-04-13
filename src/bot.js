@@ -75,7 +75,7 @@ function verifyData( data, error ) {
 
 function verifyRelease( data ) {
 	return ( null != data && undefined != data ) ?
-			 `- _Release_: *${moment( data ).format( 'LL' )}*\n` : ''
+			 `- _Release_: *${moment( data ).format( 'MMMM Do YYYY' )}*\n` : ''
 }
 
 function verifyDataMd( pre, data, unit ) {

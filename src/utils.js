@@ -57,8 +57,7 @@ function replyMessage( data ) {
                 `- _RottenTomatoes_: *${data.tomato.ratting}%*` : '' ) : ''
 
     //	'\u200B' is the invisible unicode character
-    return `[\u200B](${poster})[${data.title}](
-${'http://www.imdb.com/title/' + data.imdb.id})
+    return `[\u200B](${poster})[${data.title}](${'http://www.imdb.com/title/' + data.imdb.id})
 ${released}${rated}${runtime}${rating}${metacritic}${rotten}`
 }
 

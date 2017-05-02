@@ -31,12 +31,12 @@ bot.command( 'source', ctx => {
 })
 
 bot.command( 'search', ctx => {
-	const movie = utils.messageToString( removeCmd( ctx ) )
+	const movie = utils.messageToString( utils.removeCmd( ctx ) )
 
 	if( '' != movie  )
-		imdb.search( movie )
+		utils.imdb.search( movie )
 			.then( response =>
-				imdb.get( response[ 0 ].imdb )
+				utils.imdb.get( response[ 0 ].imdb )
 			   		.then( movie => ctx.reply( utils.replyMessage( movie ),
 					    					   { parse_mode: 'Markdown' } ) )
 					.catch( issue => console.log( 'Reject promise in get search: ',

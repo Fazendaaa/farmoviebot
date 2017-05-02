@@ -31,7 +31,7 @@ bot.command( 'source', ctx => {
 })
 
 bot.command( 'search', ctx => {
-	const movie = messageToString( removeCmd( ctx ) )
+	const movie = utils.messageToString( removeCmd( ctx ) )
 
 	if( '' != movie  )
 		imdb.search( movie )

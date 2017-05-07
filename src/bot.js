@@ -35,13 +35,13 @@ bot.command( 'search', ctx => {
 
 	if( '' != movie  )
 		utils.imdb.search( movie )
-			.then( response =>
-				utils.imdb.get( response[ 0 ].imdb )
-			   		.then( movie => ctx.reply( utils.replyMessage( movie ),
+			 .then( response =>
+				 utils.imdb.get( response[ 0 ].imdb )
+			   		       .then( movie => ctx.reply( utils.replyMessage( movie ),
 					    					   { parse_mode: 'Markdown' } ) )
-					.catch( issue => console.log( 'Reject promise in get search: ',
+					       .catch( issue => console.log( 'Reject promise in get search: ',
 										   issue ) ) )
-			.catch( issue => console.log( 'Reject promise in search search: ',
+			 .catch( issue => console.log( 'Reject promise in search search: ',
 										   issue ) )
 	else
 		ctx.reply( `Movie not found: try it again, please.` )

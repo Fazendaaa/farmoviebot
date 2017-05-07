@@ -183,10 +183,9 @@ function buttons( movie, type ) {
                         data = verifyObject( movie.genres )
                         break
                     case "cast":
-                        const director = verifyData( movie.director,
-                                                        'Not Available' ) 
+                        const director = verifyData( movie.director, 'Not Available' ) 
                         const actors = verifyObject( movie.actors, 'Not Available' )
-                        data = `Directed by: ${director}\nCasting:\n${actors}`
+                        data = replyCallback(`Directed by: ${director}\nCasting:\n${actors}`.substring(0, 196))
                         break
                     case "awards":
                         data = verifyData( movie.awards.text, 'Not Available' )
